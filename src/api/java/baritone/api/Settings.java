@@ -609,6 +609,12 @@ public final class Settings {
      */
     public final Setting<Long> slowPathTimeoutMS = new Setting<>(40000L);
 
+    /**
+     * Print path calculation statistics (movements considered, open set size, nodes per second) to stdout.
+     * Set to false to suppress verbose A* output in the console.
+     */
+    public final Setting<Boolean> debugPrintPathMovements = new Setting<>(false);
+
 
     /**
      * allows baritone to save bed waypoints when interacting with beds

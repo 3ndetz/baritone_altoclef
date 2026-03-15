@@ -1,0 +1,15 @@
+// Gradle init script: adds mavenCentral() as first repo for all subprojects
+// This ensures standard artifacts (asm, log4j, etc.) are fetched from Central
+// instead of slow/unreliable forge/wagyourtail mirrors.
+allprojects {
+    buildscript {
+        repositories {
+            mavenLocal()
+            mavenCentral()
+        }
+    }
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+}

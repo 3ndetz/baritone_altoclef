@@ -166,10 +166,12 @@ public final class AStarPathFinder extends AbstractNodeCostSearch {
         if (cancelRequested) {
             return Optional.empty();
         }
-        System.out.println(numMovementsConsidered + " movements considered");
-        System.out.println("Open set size: " + openSet.size());
-        System.out.println("PathNode map size: " + mapSize());
-        System.out.println((int) (numNodes * 1.0 / ((System.currentTimeMillis() - startTime) / 1000F)) + " nodes per second");
+        if (Baritone.settings().debugPrintPathMovements.value) {
+            System.out.println(numMovementsConsidered + " movements considered");
+            System.out.println("Open set size: " + openSet.size());
+            System.out.println("PathNode map size: " + mapSize());
+            System.out.println((int) (numNodes * 1.0 / ((System.currentTimeMillis() - startTime) / 1000F)) + " nodes per second");
+        }
         Optional<IPath> result = bestSoFar(true, numNodes);
         if (result.isPresent()) {
             logDebug("Took " + (System.currentTimeMillis() - startTime) + "ms, " + numMovementsConsidered + " movements considered");
