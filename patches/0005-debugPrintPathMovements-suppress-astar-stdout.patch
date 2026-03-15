@@ -1,0 +1,52 @@
+From 8cb2b6a2b63c817c1ac097eca2d5851c90337000 Mon Sep 17 00:00:00 2001
+From: 3ndetz <jayrawrr3@gmail.com>
+Date: Sun, 15 Mar 2026 12:53:26 +0700
+Subject: [PATCH] Add debugPrintPathMovements setting to suppress A* stdout
+ spam
+
+---
+ src/api/java/baritone/api/Settings.java                |  6 ++++++
+ .../java/baritone/pathing/calc/AStarPathFinder.java    | 10 ++++++----
+ 2 files changed, 12 insertions(+), 4 deletions(-)
+
+diff --git a/src/api/java/baritone/api/Settings.java b/src/api/java/baritone/api/Settings.java
+index 44dabae2a..e4a755e15 100644
+--- a/src/api/java/baritone/api/Settings.java
++++ b/src/api/java/baritone/api/Settings.java
+@@ -622,6 +622,12 @@ public final class Settings {
+      */
+     public final Setting<Long> slowPathTimeoutMS = new Setting<>(40000L);
+ 
++    /**
++     * Print path calculation statistics (movements considered, open set size, nodes per second) to stdout.
++     * Set to false to suppress verbose A* output in the console.
++     */
++    public final Setting<Boolean> debugPrintPathMovements = new Setting<>(false);
++
+ 
+     /**
+      * allows baritone to save bed waypoints when interacting with beds
+diff --git a/src/main/java/baritone/pathing/calc/AStarPathFinder.java b/src/main/java/baritone/pathing/calc/AStarPathFinder.java
+index 1c58cbf20..af0dc7ae2 100644
+--- a/src/main/java/baritone/pathing/calc/AStarPathFinder.java
++++ b/src/main/java/baritone/pathing/calc/AStarPathFinder.java
+@@ -189,10 +189,12 @@ public final class AStarPathFinder extends AbstractNodeCostSearch {
+         if (cancelRequested) {
+             return Optional.empty();
+         }
+-        System.out.println(numMovementsConsidered + " movements considered");
+-        System.out.println("Open set size: " + openSet.size());
+-        System.out.println("PathNode map size: " + mapSize());
+-        System.out.println((int) (numNodes * 1.0 / ((System.currentTimeMillis() - startTime) / 1000F)) + " nodes per second");
++        if (Baritone.settings().debugPrintPathMovements.value) {
++            System.out.println(numMovementsConsidered + " movements considered");
++            System.out.println("Open set size: " + openSet.size());
++            System.out.println("PathNode map size: " + mapSize());
++            System.out.println((int) (numNodes * 1.0 / ((System.currentTimeMillis() - startTime) / 1000F)) + " nodes per second");
++        }
+         Optional<IPath> result = bestSoFar(true, numNodes);
+         if (result.isPresent()) {
+             logDebug("Took " + (System.currentTimeMillis() - startTime) + "ms, " + numMovementsConsidered + " movements considered");
+-- 
+2.51.0.windows.2
+
