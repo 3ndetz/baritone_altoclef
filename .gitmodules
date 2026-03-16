@@ -1,5 +1,5 @@
 [submodule "baritone"]
 	path = baritone
-	url = https://github.com/3ndetz/baritone_altoclef.git
+	url = https://github.com/3ndetz/baritone.git
 	branch = 1.21
 	ignore = dirty
